@@ -132,16 +132,6 @@ class ReservationController extends Controller
             "reservation_room_id" => ["required", "exists:App\Models\ReservationRoom,id"],
         ]);
 
-        $reservation = Reservation::where("reservation_room_id", $validated["reservation_room_id"])
-            ->whereDate("start_date", $validated["start_date"])
-            ->whereDate("end_date", $validated["end_date"])
-            ->first();
-
-        if ($reservation) {
-            session()->flash("error", "Reservation already booked");
-            return back();
-        }
-
         $reservation->update($validated);
 
         session()->flash("success", "Successfully updated the reservation");
