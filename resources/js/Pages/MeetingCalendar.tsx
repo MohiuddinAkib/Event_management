@@ -1,4 +1,5 @@
 import React from 'react';
+import dayjs from "dayjs";
 import {useSnackbar} from "notistack";
 import {useForm} from "@inertiajs/inertia-react";
 import {useFetchUsers} from "@/hooks/useFetchUsers";
@@ -99,7 +100,7 @@ const MeetingCalendar: React.FC<{ reservations: IReservation[], errors: Record<s
 
     useErrorFlash()
     useSuccessFlash()
-    const {data, setData, post, delete: deleteReservation, put, processing, errors, reset} = useForm({
+    const {data, setData, post, delete: deleteReservation, put, processing, errors, transform} = useForm({
         title: "",
         user_id: 0,
         department: "",
@@ -115,8 +116,8 @@ const MeetingCalendar: React.FC<{ reservations: IReservation[], errors: Record<s
     const [appointments, setAppointments] = React.useState<IReservation[]>(() => {
         return props.reservations.map(reservation => ({
             ...reservation,
-            startDate: new Date(reservation.startDate),
-            endDate: new Date(reservation.endDate),
+            startDate: dayjs(reservation.startDate).toDate(),
+            endDate: dayjs(reservation.endDate).toDate(),
         }))
     })
     const [currentViewName, setCurrentViewName] = React.useState("Week");
@@ -173,14 +174,7 @@ const MeetingCalendar: React.FC<{ reservations: IReservation[], errors: Record<s
         if (added) {
             post(window.route("reservations.store"), {
                 onSuccess: (params) => {
-                    console.log("added params", params)
-                    setAppointments((state) => {
-                        let data = state;
-                        const startingAddedId = data.length > 0 ? data[data.length - 1].id + 1 : 0;
-                        data = [...data, {id: startingAddedId, ...added} as any];
-
-                        return data;
-                    });
+                    window.location.reload()
                 }
             } as any);
         }
@@ -217,6 +211,11 @@ const MeetingCalendar: React.FC<{ reservations: IReservation[], errors: Record<s
     }
 
     React.useEffect(() => {
+        transform((data) => ({
+            ...data,
+            start_date: dayjs(data.start_date).format("YYYY-MM-DD hh:mm:ss"),
+            end_date: dayjs(data.end_date).format("YYYY-MM-DD hh:mm:ss")
+        }))
         console.log("dataaaaaaaaaaa", data)
     }, [data])
 

@@ -17,19 +17,19 @@ class Reservation extends Model
     ];
 
     protected $casts = [
-        "start_date" => "date",
-        "end_date" => "date",
+        "start_date" => "datetime",
+        "end_date" => "datetime",
         "all_day" => "boolean",
     ];
 
     public function setStartDateAttribute($date)
     {
-        $this->attributes["start_date"] = Carbon::parse($date);
+        $this->attributes["start_date"] = Carbon::createFromFormat('Y-m-d h:i:s', $date);
     }
 
     public function setEndDateAttribute($date)
     {
-        $this->attributes["end_date"] = Carbon::parse($date);
+        $this->attributes["end_date"] = Carbon::createFromFormat('Y-m-d h:i:s', $date);
     }
 
     public function scopeApproved(Builder $query)
