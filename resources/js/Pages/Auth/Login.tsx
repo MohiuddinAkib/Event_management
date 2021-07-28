@@ -1,4 +1,3 @@
-import route from "ziggy-js";
 import Guest from '@/Layouts/Guest';
 import Input from '@/Components/Input';
 import Label from '@/Components/Label';
@@ -29,7 +28,7 @@ export default function Login({status, canResetPassword}) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('login'));
+        post(window.route('login'));
     };
 
     return (
@@ -77,7 +76,7 @@ export default function Login({status, canResetPassword}) {
                 <div className="flex items-center justify-end mt-4">
                     {canResetPassword && (
                         <InertiaLink
-                            href={route('password.request')}
+                            href={window.route('password.request')}
                             className="underline text-sm text-gray-600 hover:text-gray-900"
                         >
                             Forgot your password?

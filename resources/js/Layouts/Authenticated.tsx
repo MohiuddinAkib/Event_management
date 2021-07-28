@@ -1,23 +1,19 @@
-import route from "ziggy-js";
-
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import NavLink from '@/Components/NavLink';
 import Dropdown from '@/Components/Dropdown';
 import BookIcon from '@material-ui/icons/Book';
 import EventIcon from '@material-ui/icons/Event';
-import {createTheme} from "@material-ui/core/styles";
 import {InertiaLink} from '@inertiajs/inertia-react';
+import {createMuiTheme} from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
-import ApplicationLogo from '../Components/ApplicationLogo';
-import {Toolbar, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
+import ApplicationLogo from '@/Components/ApplicationLogo';
+import {Toolbar, List, ListItem, ListItemIcon, ListItemText, Container} from '@material-ui/core';
 import Layout, {
     Root,
     getFooter,
     getHeader,
     getContent,
     getSubheader,
-    getCollapseBtn,
     getDrawerSidebar,
     getSidebarContent,
     getSidebarTrigger,
@@ -27,16 +23,13 @@ const Header = getHeader(styled);
 const Footer = getFooter(styled);
 const Content = getContent(styled);
 const Subheader = getSubheader(styled);
-const CollapseBtn = getCollapseBtn(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
 const SidebarTrigger = getSidebarTrigger(styled);
 const SidebarContent = getSidebarContent(styled);
 
 const scheme = Layout();
 
-const defaultTheme = require('tailwindcss/defaultTheme');
-
-const theme = createTheme({
+const theme = createMuiTheme({
     typography: {
         fontFamily: [
             'ui-sans-serif',
@@ -57,7 +50,7 @@ const theme = createTheme({
     },
     palette: {
         primary: {
-            main: '#7d4709',
+            main: '#e74c3c',
         },
         secondary: {
             main: '#fffaf2',
@@ -86,47 +79,48 @@ const theme = createTheme({
     },
 });
 
+scheme.configureHeader(builder => {
+    builder
+        .registerConfig('xs', {
+            position: 'sticky',
+        })
+        .registerConfig('md', {
+            clipped: true,
+            position: 'relative', // won't stick to top when scroll down
+        });
+});
+
+scheme.configureSubheader(builder => {
+    builder.create('subheader', {})
+        .registerConfig('xs', {
+            layer: 1,
+            clipped: true,
+            position: 'relative',
+        })
+});
+
+scheme.configureEdgeSidebar(builder => {
+    builder
+        .create('unique_id', {anchor: 'left'})
+        .registerTemporaryConfig('xs', {
+            width: 'auto', // 'auto' is only valid for temporary variant
+        })
+        .registerPersistentConfig('md', {
+            width: 256, // px, (%, rem, em is compatible)
+            autoExpanded: true,
+            collapsedWidth: 0,
+            collapsible: true,
+            persistentBehavior: {
+                header: "none",
+                content: "fit",
+                footer: "fit"
+            },
+            headerMagnetEnabled: true
+        });
+    ;
+});
+
 export default function Authenticated({auth, header, children}) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-
-    scheme.configureHeader(builder => {
-        builder
-            .registerConfig('xs', {
-                position: 'sticky',
-            })
-            .registerConfig('md', {
-                clipped: true,
-                position: 'relative', // won't stick to top when scroll down
-            });
-    });
-
-    scheme.configureSubheader(builder => {
-        builder.create('subheader', {})
-            .registerConfig('xs', {
-                layer: 1,
-                clipped: true,
-                // initialHeight: 40,
-                position: 'relative',
-            })
-    });
-
-    scheme.configureEdgeSidebar(builder => {
-        builder
-            .create('unique_id', {anchor: 'left'})
-            .registerTemporaryConfig('xs', {
-                width: 'auto', // 'auto' is only valid for temporary variant
-            })
-            .registerPersistentConfig('md', {
-                width: 256, // px, (%, rem, em is compatible)
-                autoExpanded: true,
-                collapsedWidth: 0,
-                collapsible: true,
-                persistentBehavior: "none",
-                headerMagnetEnabled: true
-            });
-        ;
-    });
-
     return (
         <Root scheme={scheme} theme={theme}>
             <CssBaseline/>
@@ -180,7 +174,7 @@ export default function Authenticated({auth, header, children}) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('logout')} method="post" as="button">
+                                        <Dropdown.Link href={window.route('logout')} method="post" as="button">
                                             Log Out
                                         </Dropdown.Link>
                                     </Dropdown.Content>
@@ -194,14 +188,14 @@ export default function Authenticated({auth, header, children}) {
             <DrawerSidebar sidebarId={'unique_id'}>
                 <SidebarContent>
                     <List>
-                        <ListItem button component={NavLink} href={route("meet_calendar.index")}>
+                        <ListItem button component={InertiaLink} href={window.route("reservations.create")}>
                             <ListItemIcon>
                                 <EventIcon/>
                             </ListItemIcon>
                             <ListItemText primary="Meeting Calendar"/>
                         </ListItem>
 
-                        <ListItem button component={NavLink} href={route("room_booking.index")}>
+                        <ListItem button component={InertiaLink} href={window.route("reservations.index")}>
                             <ListItemIcon>
                                 <BookIcon/>
                             </ListItemIcon>
@@ -215,7 +209,11 @@ export default function Authenticated({auth, header, children}) {
                 {children}
             </Content>
 
-            <Footer>Footer</Footer>
+            <Footer>
+                <Toolbar>
+                    Apex inc
+                </Toolbar>
+            </Footer>
         </Root>
     );
 }

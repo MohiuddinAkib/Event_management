@@ -1,5 +1,4 @@
 import React from 'react';
-import route from "ziggy-js";
 import Guest from '@/Layouts/Guest';
 import Button from '@/Components/Button';
 import {useForm} from '@inertiajs/inertia-react';
@@ -11,7 +10,7 @@ export default function VerifyEmail({status}) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('verification.send'));
+        post(window.route('verification.send'));
     };
 
     return (
@@ -32,7 +31,7 @@ export default function VerifyEmail({status}) {
                     <Button processing={processing}>Resend Verification Email</Button>
 
                     <InertiaLink
-                        href={route('logout')}
+                        href={window.route('logout')}
                         method="post"
                         as="button"
                         className="underline text-sm text-gray-600 hover:text-gray-900"

@@ -1,4 +1,3 @@
-import route from "ziggy-js";
 import Guest from '@/Layouts/Guest';
 import Input from '@/Components/Input';
 import Label from '@/Components/Label';
@@ -28,7 +27,7 @@ export default function ResetPassword({ token, email }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('password.update'));
+        post(window.route('password.update'));
     };
 
     return (

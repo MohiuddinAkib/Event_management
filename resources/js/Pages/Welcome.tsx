@@ -1,5 +1,4 @@
 import React from 'react';
-import route from "ziggy-js";
 import {InertiaLink} from '@inertiajs/inertia-react';
 
 export default function Welcome(props) {
@@ -13,11 +12,11 @@ export default function Welcome(props) {
                     </InertiaLink>
                 ) : (
                     <>
-                        <InertiaLink href={route('login')} className="text-sm text-gray-700 underline">
+                        <InertiaLink href={window.route('login')} className="text-sm text-gray-700 underline">
                             Log in
                         </InertiaLink>
 
-                        <InertiaLink href={route('register')} className="ml-4 text-sm text-gray-700 underline">
+                        <InertiaLink href={window.route('register')} className="ml-4 text-sm text-gray-700 underline">
                             Register
                         </InertiaLink>
                     </>
