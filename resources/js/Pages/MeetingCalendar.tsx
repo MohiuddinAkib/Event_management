@@ -213,8 +213,8 @@ const MeetingCalendar: React.FC<{ reservations: IReservation[], errors: Record<s
     React.useEffect(() => {
         transform((data) => ({
             ...data,
-            start_date: dayjs(data.start_date).format("YYYY-MM-DD hh:mm:ss"),
-            end_date: dayjs(data.end_date).format("YYYY-MM-DD hh:mm:ss")
+            start_date: dayjs(data.start_date).format("YYYY-MM-DD HH:mm:ss"),
+            end_date: dayjs(data.end_date).format("YYYY-MM-DD HH:mm:ss")
         }))
         console.log("dataaaaaaaaaaa", data)
     }, [data])

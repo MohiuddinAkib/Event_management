@@ -58,8 +58,8 @@ class ReservationController extends Controller
             "title" => ["string", "nullable"],
             "user_id" => ["required", "exists:App\Models\User,id"],
             "number_of_people" => ["numeric", "required", "min:1"],
-            "start_date" => ["date", "required"],
-            "end_date" => ["date", "required", "after_or_equal:starts_date"],
+            "start_date" => ["date", "required", "date_format:Y-m-d H:i:s"],
+            "end_date" => ["date", "required", "after_or_equal:starts_date", "date_format:Y-m-d H:i:s"],
             "notes" => ["string", "required"],
             "r_rule" => ["string", "nullable"],
             "all_day" => ["boolean", "nullable"],
@@ -68,8 +68,8 @@ class ReservationController extends Controller
         ]);
 
         $reservation = Reservation::where("reservation_room_id", $validated["reservation_room_id"])
-            ->whereDate("start_date", Carbon::createFromFormat('Y-m-d h:i:s', $validated["start_date"]))
-            ->whereDate("end_date", Carbon::createFromFormat('Y-m-d h:i:s', $validated["end_date"]))
+            ->whereDate("start_date", Carbon::createFromFormat('Y-m-d H:i:s', $validated["start_date"]))
+            ->whereDate("end_date", Carbon::createFromFormat('Y-m-d H:i:s', $validated["end_date"]))
             ->first();
 
         if ($reservation) {
@@ -123,8 +123,8 @@ class ReservationController extends Controller
             "title" => ["string", "nullable"],
             "user_id" => ["required", "exists:App\Models\User,id"],
             "number_of_people" => ["numeric", "required", "min:1"],
-            "start_date" => ["date", "required"],
-            "end_date" => ["date", "required", "after_or_equal:starts_date"],
+            "start_date" => ["date", "required", "date_format:Y-m-d H:i:s"],
+            "end_date" => ["date", "required", "after_or_equal:starts_date", "date_format:Y-m-d H:i:s"],
             "notes" => ["string", "required"],
             "r_rule" => ["string", "nullable"],
             "all_day" => ["boolean", "nullable"],

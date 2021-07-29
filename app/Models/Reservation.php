@@ -24,12 +24,12 @@ class Reservation extends Model
 
     public function setStartDateAttribute($date)
     {
-        $this->attributes["start_date"] = Carbon::createFromFormat('Y-m-d h:i:s', $date);
+        $this->attributes["start_date"] = Carbon::createFromFormat('Y-m-d H:i:s', $date);
     }
 
     public function setEndDateAttribute($date)
     {
-        $this->attributes["end_date"] = Carbon::createFromFormat('Y-m-d h:i:s', $date);
+        $this->attributes["end_date"] = Carbon::createFromFormat('Y-m-d H:i:s', $date);
     }
 
     public function scopeApproved(Builder $query)
