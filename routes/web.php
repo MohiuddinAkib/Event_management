@@ -36,14 +36,17 @@ Route::get('/users-for-dropdown', function () {
     });
 })->name("users.dropdown.list");
 
-Route::get('/reservations/create', [\App\Http\Controllers\ReservationController::class, "create"])->middleware(['auth', 'verified'])->name("reservations.create");
-Route::get('/reservations', [\App\Http\Controllers\ReservationController::class, "index"])->middleware(['auth', 'verified'])->name("reservations.index");
-Route::post('/reservations', [\App\Http\Controllers\ReservationController::class, "store"])->middleware(['auth', 'verified'])->name("reservations.store");
-Route::delete('/reservations/{reservation}', [\App\Http\Controllers\ReservationController::class, "destroy"])->middleware(['auth', 'verified'])->name("reservations.destroy");
-Route::put('/reservations/{reservation}', [\App\Http\Controllers\ReservationController::class, "update"])->middleware(['auth', 'verified'])->name("reservations.update");
+Route::get('/reservations/create', [\App\Http\Controllers\ReservationController::class, "create"])->middleware(['auth'])->name("reservations.create");
+Route::get('/reservations', [\App\Http\Controllers\ReservationController::class, "index"])->middleware(['auth'])->name("reservations.index");
+Route::post('/reservations', [\App\Http\Controllers\ReservationController::class, "store"])->middleware(['auth'])->name("reservations.store");
+Route::delete('/reservations/{reservation}', [\App\Http\Controllers\ReservationController::class, "destroy"])->middleware(['auth'])->name("reservations.destroy");
+Route::put('/reservations/{reservation}', [\App\Http\Controllers\ReservationController::class, "update"])->middleware(['auth'])->name("reservations.update");
+Route::put('/reservations/{reservation}/approve', [\App\Http\Controllers\ReservationController::class, "approve"])->middleware(['auth'])->name("reservations.approve");
+Route::put('/reservations/{reservation}/reject', [\App\Http\Controllers\ReservationController::class, "reject"])->middleware(['auth'])->name("reservations.reject");
+Route::post('/rooms', [\App\Http\Controllers\ReservationRoomController::class, "store"])->middleware(['auth'])->name("rooms.store");
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 require __DIR__ . '/auth.php';

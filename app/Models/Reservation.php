@@ -41,4 +41,9 @@ class Reservation extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function room()
+    {
+        return $this->belongsTo(ReservationRoom::class, "reservation_room_id", "id");
+    }
 }

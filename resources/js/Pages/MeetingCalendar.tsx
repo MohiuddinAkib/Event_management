@@ -10,7 +10,7 @@ import {Box, Paper, useTheme} from "@material-ui/core";
 import {useSuccessFlash} from "@/hooks/useSuccessFlash";
 import {useFetchResources} from "@/hooks/useFetchResources";
 import {ReservationStatus} from "@/constants/ReservationStatus";
-import {AppointmentModel, ChangeSet, EditingState, IntegratedEditing, ViewState} from '@devexpress/dx-react-scheduler';
+import {ChangeSet, EditingState, IntegratedEditing, ViewState} from '@devexpress/dx-react-scheduler';
 import {
     Toolbar,
     DayView,

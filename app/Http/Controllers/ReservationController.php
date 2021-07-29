@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\ReservationStatus;
 use Carbon\Carbon;
 use Inertia\Inertia;
 use App\Constants\RoleNames;
@@ -17,7 +18,24 @@ class ReservationController extends Controller
      */
     public function index()
     {
-        return Inertia::render('RoomBooking');
+        $reservations = Reservation::latest()->with(["user", "room"])->get()->map(function ($reservation) {
+            return [
+                "id" => $reservation->id,
+                "title" => $reservation->title,
+                "user" => $reservation->user,
+                "numberOfPeople" => $reservation->number_of_people,
+                "startDate" => $reservation->start_date->format('Y/m/d H:i:s'),
+                "endDate" => $reservation->end_date->format('Y/m/d H:i:s'),
+                "notes" => $reservation->notes,
+                "rRule" => $reservation->r_rule,
+                "allDay" => $reservation->all_day,
+                "status" => $reservation->status,
+                "room" => $reservation->room,
+                "department" => $reservation->department,
+            ];
+        });
+
+        return Inertia::render('RoomBooking', compact("reservations"));
     }
 
     /**
@@ -153,6 +171,46 @@ class ReservationController extends Controller
 
         $reservation->delete();
         session()->flash("success", "Successfully deleted the reservation");
+        return back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param \App\Models\Reservation $reservation
+     * @return \Illuminate\Http\Response
+     */
+    public function approve(Reservation $reservation)
+    {
+        if (!auth()->user()->hasRole(RoleNames::ADMIN)) {
+            session()->flash("error", "You are not allowed to do the action");
+            return back();
+        }
+
+        $reservation->update([
+            "status" => ReservationStatus::APPROVED
+        ]);
+        session()->flash("success", "Successfully approved the reservation");
+        return back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param \App\Models\Reservation $reservation
+     * @return \Illuminate\Http\Response
+     */
+    public function reject(Reservation $reservation)
+    {
+        if (!auth()->user()->hasRole(RoleNames::ADMIN)) {
+            session()->flash("error", "You are not allowed to do the action");
+            return back();
+        }
+
+        $reservation->update([
+            "status" => ReservationStatus::REJECTED
+        ]);
+        session()->flash("success", "Successfully rejected the reservation");
         return back();
     }
 }

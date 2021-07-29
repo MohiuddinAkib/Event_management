@@ -6,6 +6,7 @@ import EventIcon from '@material-ui/icons/Event';
 import {InertiaLink} from '@inertiajs/inertia-react';
 import {createMuiTheme} from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
+import {StylesProvider} from '@material-ui/core/styles'
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import {Toolbar, List, ListItem, ListItemIcon, ListItemText, Container} from '@material-ui/core';
 import Layout, {
@@ -122,34 +123,35 @@ scheme.configureEdgeSidebar(builder => {
 
 export default function Authenticated({auth, header, children}) {
     return (
-        <Root scheme={scheme} theme={theme}>
-            <CssBaseline/>
-            <Header className="bg-white border-b border-gray-100">
-                <Toolbar>
-                    <div className={"flex-1"}>
-                        <div className="flex justify-between h-16">
-                            <div className="flex">
-                                <div className="flex-shrink-0 flex items-center">
-                                    <InertiaLink href="/">
-                                        <ApplicationLogo className="block h-9 w-auto text-gray-500"/>
-                                    </InertiaLink>
+        <StylesProvider injectFirst>
+            <Root scheme={scheme} theme={theme}>
+                <CssBaseline/>
+                <Header className="bg-white border-b border-gray-100">
+                    <Toolbar>
+                        <div className={"flex-1"}>
+                            <div className="flex justify-between h-16">
+                                <div className="flex">
+                                    <div className="flex-shrink-0 flex items-center">
+                                        <InertiaLink href="/">
+                                            <ApplicationLogo className="block h-9 w-auto text-gray-500"/>
+                                        </InertiaLink>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <SidebarTrigger sidebarId="unique_id"/>
-                </Toolbar>
-            </Header>
+                        <SidebarTrigger sidebarId="unique_id"/>
+                    </Toolbar>
+                </Header>
 
-            {header && (
-                <Subheader subheaderId={"subheader"} className={"bg-white shadow"}>
-                    <Toolbar>
-                        <div className={"flex-1"}>{header}</div>
+                {header && (
+                    <Subheader subheaderId={"subheader"} className={"bg-white shadow"}>
+                        <Toolbar>
+                            <div className={"flex-1"}>{header}</div>
 
-                        <div className="hidden sm:flex sm:items-center sm:ml-6">
-                            <div className="ml-3 relative">
-                                <Dropdown>
-                                    <Dropdown.Trigger>
+                            <div className="hidden sm:flex sm:items-center sm:ml-6">
+                                <div className="ml-3 relative">
+                                    <Dropdown>
+                                        <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
@@ -171,49 +173,50 @@ export default function Authenticated({auth, header, children}) {
                                                 </svg>
                                             </button>
                                         </span>
-                                    </Dropdown.Trigger>
+                                        </Dropdown.Trigger>
 
-                                    <Dropdown.Content>
-                                        <Dropdown.Link href={window.route('logout')} method="post" as="button">
-                                            Log Out
-                                        </Dropdown.Link>
-                                    </Dropdown.Content>
-                                </Dropdown>
+                                        <Dropdown.Content>
+                                            <Dropdown.Link href={window.route('logout')} method="post" as="button">
+                                                Log Out
+                                            </Dropdown.Link>
+                                        </Dropdown.Content>
+                                    </Dropdown>
+                                </div>
                             </div>
-                        </div>
+                        </Toolbar>
+                    </Subheader>
+                )}
+
+                <DrawerSidebar sidebarId={'unique_id'}>
+                    <SidebarContent>
+                        <List>
+                            <ListItem button component={InertiaLink} href={window.route("reservations.create")}>
+                                <ListItemIcon>
+                                    <EventIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary="Meeting Calendar"/>
+                            </ListItem>
+
+                            <ListItem button component={InertiaLink} href={window.route("reservations.index")}>
+                                <ListItemIcon>
+                                    <BookIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary="Room Booking"/>
+                            </ListItem>
+                        </List>
+                    </SidebarContent>
+                </DrawerSidebar>
+
+                <Content className="min-h-screen bg-gray-100">
+                    {children}
+                </Content>
+
+                <Footer>
+                    <Toolbar>
+                        Apex inc
                     </Toolbar>
-                </Subheader>
-            )}
-
-            <DrawerSidebar sidebarId={'unique_id'}>
-                <SidebarContent>
-                    <List>
-                        <ListItem button component={InertiaLink} href={window.route("reservations.create")}>
-                            <ListItemIcon>
-                                <EventIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary="Meeting Calendar"/>
-                        </ListItem>
-
-                        <ListItem button component={InertiaLink} href={window.route("reservations.index")}>
-                            <ListItemIcon>
-                                <BookIcon/>
-                            </ListItemIcon>
-                            <ListItemText primary="Room Booking"/>
-                        </ListItem>
-                    </List>
-                </SidebarContent>
-            </DrawerSidebar>
-
-            <Content className="min-h-screen bg-gray-100">
-                {children}
-            </Content>
-
-            <Footer>
-                <Toolbar>
-                    Apex inc
-                </Toolbar>
-            </Footer>
-        </Root>
+                </Footer>
+            </Root>
+        </StylesProvider>
     );
 }

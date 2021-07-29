@@ -49,7 +49,14 @@ class ReservationRoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            "text" => ["required", "string"],
+            "color" => ["required", "string"],
+        ]);
+
+        ReservationRoom::create($validated);
+        session()->flash("success", "Room creation was successful");
+        return back();
     }
 
     /**

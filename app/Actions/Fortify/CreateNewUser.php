@@ -2,6 +2,7 @@
 
 namespace App\Actions\Fortify;
 
+use App\Constants\RoleNames;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -24,10 +25,14 @@ class CreateNewUser
             'password' => $this->passwordRules(),
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
+        $user->assignRole(RoleNames::EMPLOYEE);
+
+        return $user;
     }
 }
