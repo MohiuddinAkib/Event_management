@@ -29,16 +29,31 @@ import {
 const Appointment = ({
                          children, style, ...restProps
                      }) => {
-    console.log("rest props", restProps)
+    console.log("rest props", restProps, style)
     const theme = useTheme()
 
-    return (<Appointments.Appointment
-        {...restProps}
-        style={{
+    const props = {
+        ...restProps
+    }
+
+    if (restProps.data.status === ReservationStatus.PENDING) {
+        props.style = {
             ...style,
-            backgroundColor: restProps.data.status === ReservationStatus.PENDING ? theme.palette.warning.main : restProps.data.status === ReservationStatus.REJECTED ? theme.palette.error.main : theme.palette.success.main,
+            backgroundColor: theme.palette.warning.main,
             borderRadius: '8px',
-        }}
+        }
+    }
+
+    if (restProps.data.status === ReservationStatus.REJECTED) {
+        props.style = {
+            ...style,
+            backgroundColor: theme.palette.error.main,
+            borderRadius: '8px',
+        }
+    }
+
+    return (<Appointments.Appointment
+        {...props}
     >
         {children}
     </Appointments.Appointment>)
