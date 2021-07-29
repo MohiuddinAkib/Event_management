@@ -121,7 +121,7 @@ const UserManagement: React.FC = (props) => {
                                 />
                             </Box>
 
-                            <Box>
+                            <Box mb={2}>
                                 <TextField
                                     fullWidth
                                     label={"Email"}
@@ -135,7 +135,7 @@ const UserManagement: React.FC = (props) => {
                                 />
                             </Box>
 
-                            <Box>
+                            <Box mb={2}>
                                 <TextField
                                     fullWidth
                                     label={"Password"}
