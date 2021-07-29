@@ -24,10 +24,10 @@ class StaticDbDataProvider extends ServiceProvider
      */
     public function boot()
     {
-        Artisan::call("db:seed", [
-            "--class" => "RolesAndPermission"
-        ]);
-
-        Artisan::call("create:admin");
+//        Artisan::call("db:seed", [
+//            "--class" => "RolesAndPermission"
+//        ]);
+//
+//        Artisan::call("create:admin");
     }
 }

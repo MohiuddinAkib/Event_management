@@ -9,18 +9,13 @@ use Spatie\Permission\Models\Role;
 class RolesAndPermission extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the databRase seeds.
      *
      * @return void
      */
     public function run()
     {
-        if (!Role::exists(RoleNames::ADMIN)) {
-            Role::create(["name" => RoleNames::ADMIN]);
-        }
-
-        if (!Role::exists(RoleNames::EMPLOYEE)) {
-            Role::create(["name" => RoleNames::EMPLOYEE]);
-        }
+        Role::create(["name" => RoleNames::ADMIN]);
+        Role::create(["name" => RoleNames::EMPLOYEE]);
     }
 }

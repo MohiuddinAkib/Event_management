@@ -35,7 +35,9 @@ class ReservationController extends Controller
             ];
         });
 
-        return Inertia::render('RoomBooking', compact("reservations"));
+        $isAdmin = auth()->user()->hasRole(RoleNames::ADMIN);
+
+        return Inertia::render('RoomBooking', compact("reservations", "isAdmin"));
     }
 
     /**
@@ -61,7 +63,9 @@ class ReservationController extends Controller
                 "department" => $reservation->department,
             ];
         });
-        return Inertia::render('MeetingCalendar', compact("reservations"));
+        $isAdmin = auth()->user()->hasRole(RoleNames::ADMIN);
+
+        return Inertia::render('MeetingCalendar', compact("reservations", "isAdmin"));
     }
 
     /**
@@ -77,7 +81,7 @@ class ReservationController extends Controller
             "user_id" => ["required", "exists:App\Models\User,id"],
             "number_of_people" => ["numeric", "required", "min:1"],
             "start_date" => ["date", "required", "date_format:Y-m-d H:i:s"],
-            "end_date" => ["date", "required", "after_or_equal:starts_date", "date_format:Y-m-d H:i:s"],
+            "end_date" => ["date", "required", "date_format:Y-m-d H:i:s"],
             "notes" => ["string", "required"],
             "r_rule" => ["string", "nullable"],
             "all_day" => ["boolean", "nullable"],
@@ -142,7 +146,7 @@ class ReservationController extends Controller
             "user_id" => ["required", "exists:App\Models\User,id"],
             "number_of_people" => ["numeric", "required", "min:1"],
             "start_date" => ["date", "required", "date_format:Y-m-d H:i:s"],
-            "end_date" => ["date", "required", "after_or_equal:starts_date", "date_format:Y-m-d H:i:s"],
+            "end_date" => ["date", "required", "date_format:Y-m-d H:i:s"],
             "notes" => ["string", "required"],
             "r_rule" => ["string", "nullable"],
             "all_day" => ["boolean", "nullable"],

@@ -1,7 +1,7 @@
 import React from 'react';
 import dayjs from "dayjs";
 import {useSnackbar} from "notistack";
-import {useForm} from "@inertiajs/inertia-react";
+import {useForm, usePage} from "@inertiajs/inertia-react";
 import {useFetchUsers} from "@/hooks/useFetchUsers";
 import Authenticated from "@/Layouts/Authenticated";
 import {useErrorFlash} from "@/hooks/useErrorFlash";
@@ -61,6 +61,9 @@ const Appointment = ({
 
 const BasicLayout = ({onFieldChange, appointmentData, ...restProps}) => {
     const {data, loading} = useFetchUsers()
+    const props = usePage().props
+
+    console.log("propppppps", props)
 
     const onCustomFieldChange = (fieldName) => (nextValue) => {
         onFieldChange({[fieldName]: nextValue});
@@ -83,17 +86,20 @@ const BasicLayout = ({onFieldChange, appointmentData, ...restProps}) => {
                 onValueChange={onCustomFieldChange("department")}
             />
 
-            <AppointmentForm.Label
-                text="Name"
-                type={"ordinaryLabel"}
-            />
-            <AppointmentForm.Select
-                availableOptions={data}
-                placeholder="User name"
-                type={"outlinedSelect"}
-                value={appointmentData.userId ?? ''}
-                onValueChange={onCustomFieldChange("userId")}
-            />
+            {props.isAdmin && (
+                <>
+                    <AppointmentForm.Label
+                        text="Name"
+                        type={"ordinaryLabel"}
+                    />
+                    <AppointmentForm.Select
+                        availableOptions={data}
+                        placeholder="User name"
+                        type={"outlinedSelect"}
+                        value={appointmentData.userId ?? ''}
+                        onValueChange={onCustomFieldChange("userId")}
+                    />
+                </>)}
 
             <AppointmentForm.Label
                 text="Number of people"
@@ -144,7 +150,7 @@ const MeetingCalendar: React.FC<{ reservations: IReservation[], errors: Record<s
         console.log("hahah", addedAppointment)
         setData({
             "title": addedAppointment.title,
-            "user_id": addedAppointment.userId,
+            "user_id": props.isAdmin ? addedAppointment.userId : props.auth.user.id,
             "number_of_people": addedAppointment.numberOfPeople,
             "start_date": addedAppointment.startDate,
             "end_date": addedAppointment.endDate,
@@ -165,7 +171,7 @@ const MeetingCalendar: React.FC<{ reservations: IReservation[], errors: Record<s
 
         setData({
             "title": updatedAppointMent.title,
-            "user_id": updatedAppointMent.userId,
+            "user_id": props.isAdmin ? addedAppointment.userId : props.auth.user.id,
             "number_of_people": updatedAppointMent.numberOfPeople,
             "start_date": updatedAppointMent.startDate,
             "end_date": updatedAppointMent.endDate,
@@ -294,7 +300,7 @@ const MeetingCalendar: React.FC<{ reservations: IReservation[], errors: Record<s
                         />
                         <AppointmentTooltip
                             showOpenButton
-                            showDeleteButton
+                            // showDeleteButton
                         />
                         <AppointmentForm
                             basicLayoutComponent={BasicLayout}

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Constants\RoleNames;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
@@ -20,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
                 'success' => Session::get('success'),
                 'error' => Session::get('error'),
             ];
+        });
+
+        Inertia::share('isAdmin', function () {
+            return auth()->user()?->hasRole(RoleNames::ADMIN);
         });
     }
 

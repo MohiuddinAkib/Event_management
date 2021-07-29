@@ -72,7 +72,7 @@ const RoomBooking: React.FC = (props) => {
                                         <TableCell>Notes</TableCell>
                                         <TableCell>Status</TableCell>
                                         <TableCell>All day</TableCell>
-                                        <TableCell>Actions</TableCell>
+                                        {props.isAdmin && <TableCell>Actions</TableCell>}
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -99,14 +99,14 @@ const RoomBooking: React.FC = (props) => {
                                                     color={"primary"}
                                                     checked={reservation.allDay}/>
                                             </TableCell>
-                                            <TableCell>
+                                            {props.isAdmin && <TableCell>
                                                 <Button onClick={approveReservation.bind(null, reservation.id)}>
                                                     Approve
                                                 </Button>
                                                 <Button onClick={rejectReservation.bind(null, reservation.id)}>
                                                     Reject
                                                 </Button>
-                                            </TableCell>
+                                            </TableCell>}
                                         </TableRow>
                                     ))}
                                 </TableBody>

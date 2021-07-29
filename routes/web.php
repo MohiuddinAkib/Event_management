@@ -45,6 +45,11 @@ Route::put('/reservations/{reservation}/approve', [\App\Http\Controllers\Reserva
 Route::put('/reservations/{reservation}/reject', [\App\Http\Controllers\ReservationController::class, "reject"])->middleware(['auth'])->name("reservations.reject");
 Route::post('/rooms', [\App\Http\Controllers\ReservationRoomController::class, "store"])->middleware(['auth'])->name("rooms.store");
 
+Route::post('/users', [\App\Http\Controllers\UserManagementController::class, "store"])->middleware(['auth', "role:" . \App\Constants\RoleNames::ADMIN])->name("user_management.store");
+Route::get('/users', [\App\Http\Controllers\UserManagementController::class, "index"])->middleware(['auth', "role:" . \App\Constants\RoleNames::ADMIN])->name("user_management.index");
+Route::delete('/users/{user}', [\App\Http\Controllers\UserManagementController::class, "destroy"])->middleware(['auth', "role:" . \App\Constants\RoleNames::ADMIN])->name("user_management.destroy");
+Route::put('/users/{userId}', [\App\Http\Controllers\UserManagementController::class, "revert"])->middleware(['auth', "role:" . \App\Constants\RoleNames::ADMIN])->name("user_management.revert");
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth'])->name('dashboard');

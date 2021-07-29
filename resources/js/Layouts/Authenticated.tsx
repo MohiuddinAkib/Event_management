@@ -8,6 +8,7 @@ import {createMuiTheme} from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {StylesProvider} from '@material-ui/core/styles'
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {Toolbar, List, ListItem, ListItemIcon, ListItemText, Container} from '@material-ui/core';
 import Layout, {
     Root,
@@ -202,6 +203,13 @@ export default function Authenticated({auth, header, children}) {
                                     <BookIcon/>
                                 </ListItemIcon>
                                 <ListItemText primary="Room Booking"/>
+                            </ListItem>
+
+                            <ListItem button component={InertiaLink} href={window.route("user_management.index")}>
+                                <ListItemIcon>
+                                    <AccountCircleIcon/>
+                                </ListItemIcon>
+                                <ListItemText primary="User Management"/>
                             </ListItem>
                         </List>
                     </SidebarContent>
